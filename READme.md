@@ -17,6 +17,8 @@
   - [Linked List](#linked-list)
   - [Trie](#trie)
   - [Heap](#heap)
+  - [Graphs](#graphs)
+        - [Breadth-First Search in a Graph](#breadth-first-search-in-a-graph)
 
 <!-- /code_chunk_output -->
 
@@ -926,3 +928,49 @@ let MaxHeap = function() {
 ```
 
 <img src="./images/Heap.png">
+
+## Graphs
+
+- Data in graphs are called nodes / vertices
+- The connections between the nodes are called edges
+- Example of graph: Social Media Network
+- <b>Directed Graphs</b>: graphs that do have directions associated with its edges 
+  - Example: The internet and web page links, nodes are webpages, edges are links to other pages
+- <b>Undirected Graphs</b>: graphs that have no directs associated to its edges
+  - Example: social network, nodes are people, edges are friendships
+
+
+##### Breadth-First Search in a Graph
+```
+function bfs(graph, root) {
+  var nodesLen = {};
+  
+  for (var i = 0; i < graph.length; i++) {
+    nodesLen[i] = Infinity;
+  }
+  nodesLen[root] = 0; 
+  
+  var queue = [root]; 
+  var current; 
+
+  while (queue.length != 0) {
+    current = queue.shift();
+    
+    var curConnected = graph[current];
+    var neighborIdx = []; 
+    var idx = curConnected.indexOf(1); 
+    while (idx != -1) {
+      neighborIdx.push(idx); 
+      idx = curConnected.indexOf(1, idx + 1); 
+    }
+    
+    for (var j = 0; j < neighborIdx.length; j++) {
+      if (nodesLen[neighborIdx[j]] == Infinity) {
+        nodesLen[neighborIdx[j]] = nodesLen[current] + 1;
+        queue.push(neighborIdx[j]); 
+      }
+    }
+  }
+  return nodesLen;
+};
+```
