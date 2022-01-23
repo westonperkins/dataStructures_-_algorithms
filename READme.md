@@ -13,6 +13,10 @@
   - [Binary Search Tree](#binary-search-tree)
     - [Binary Search Tree: Height & Traversal](#binary-search-tree-height-traversal)
         - [Breadth-First Search (BFS)](#breadth-first-search-bfs)
+  - [Hash Table](#hash-table)
+  - [Linked List](#linked-list)
+  - [Trie](#trie)
+  - [Heap](#heap)
 
 <!-- /code_chunk_output -->
 
@@ -470,6 +474,8 @@ class BST {
 const bst = new BST();
 ```
 
+<img src="./images/BST.png">
+
 ### Binary Search Tree: Height & Traversal
 
 - Height represents the distance from the root node to any given leaf node
@@ -479,6 +485,9 @@ const bst = new BST();
     - Tree is balanced essentially if the leafs are even on a given layer, i.e: there is a lesser and greater leaf for each parent on a given level
 - Dissecting a Binary Search tree layer by layer by starting at the tree root and exploring all the nodes at the present depth prior to moving on to the nodes at the next depth level is called <b>Breadth-First Search</b>
 
+
+<img src="./images/BST_H&T.png">
+
 ##### Breadth-First Search (BFS)
 
 - Fundamental searhc algorithm for exploring nodes and edges of a graph
@@ -486,3 +495,434 @@ const bst = new BST();
 - BFS is particularly useful for finding the <b>shortest path on unweighted graphs</b>
     - Starts at a node, views all of that nodes neighbors before moving onto the next layer of nodes
     - Maintains a queue of which node it should visit next 
+
+## Hash Table
+
+- Very efficient: average time complexity is O(1)
+- Basically runs keys through a hash function so that it links to a number (hash)
+- In Javascript you do not have to code out the logic for a hash table (object) but its nice to see how it works under the hood.
+
+```
+var hash = (string, max) => {
+  var hash = 0;
+  for (var i = 0; i < string.length; i++) {
+    hash += string.charCodeAt(i);
+  }
+  return hash % max;
+};
+
+let HashTable = function() {
+
+  let storage = [];
+  const storageLimit = 14;
+  
+  this.print = function() {
+    console.log(storage)
+  }
+
+  this.add = function(key, value) {
+    var index = hash(key, storageLimit);
+    if (storage[index] === undefined) {
+      storage[index] = [
+        [key, value]
+      ];
+    } else {
+      var inserted = false;
+      for (var i = 0; i < storage[index].length; i++) {
+        if (storage[index][i][0] === key) {
+          storage[index][i][1] = value;
+          inserted = true;
+        }
+      }
+      if (inserted === false) {
+        storage[index].push([key, value]);
+      }
+    }
+  };
+
+  this.remove = function(key) {
+    var index = hash(key, storageLimit);
+    if (storage[index].length === 1 && storage[index][0][0] === key) {
+      delete storage[index];
+    } else {
+      for (var i = 0; i < storage[index].length; i++) {
+        if (storage[index][i][0] === key) {
+          delete storage[index][i];
+        }
+      }
+    }
+  };
+
+  this.lookup = function(key) {
+    var index = hash(key, storageLimit);
+    if (storage[index] === undefined) {
+      return undefined;
+    } else {
+      for (var i = 0; i < storage[index].length; i++) {
+        if (storage[index][i][0] === key) {
+          return storage[index][i][1];
+        }
+      }
+    }
+  };
+
+};
+
+```
+
+## Linked List
+
+- Common data structure where elements are stored in a node with 2 key pieces of information:
+  - The element itself 
+  - A reference to the next node
+- Linked Lists are:
+  - Efficient Insertions and Deletions
+  - No random access to elements ( like arrays )
+  - No waste of memory
+  - Sequential access is slow 
+    - Elements are not in contiguous memory locations
+
+``` 
+function LinkedList() { 
+  var length = 0; 
+  var head = null; 
+
+  var Node = function(element){
+    this.element = element; 
+    this.next = null; 
+  }; 
+
+  this.size = function(){
+    return length;
+  };
+
+  this.head = function(){
+    return head;
+  };
+
+  this.add = function(element){
+    var node = new Node(element);
+    if(head === null){
+        head = node;
+    } else {
+        var currentNode = head;
+
+        while(currentNode.next){
+            currentNode  = currentNode.next;
+        }
+
+        currentNode.next = node;
+    }
+
+    length++;
+  }; 
+
+  this.remove = function(element){
+    var currentNode = head;
+    var previousNode;
+    if(currentNode.element === element){
+        head = currentNode.next;
+    } else {
+        while(currentNode.element !== element) {
+            previousNode = currentNode;
+            currentNode = currentNode.next;
+        }
+
+        previousNode.next = currentNode.next;
+    }
+
+    length --;
+  };
+  
+  this.isEmpty = function() {
+    return length === 0;
+  };
+
+  this.indexOf = function(element) {
+    var currentNode = head;
+    var index = -1;
+
+    while(currentNode){
+        index++;
+        if(currentNode.element === element){
+            return index;
+        }
+        currentNode = currentNode.next;
+    }
+
+    return -1;
+  };
+
+  this.elementAt = function(index) {
+    var currentNode = head;
+    var count = 0;
+    while (count < index){
+        count ++;
+        currentNode = currentNode.next
+    }
+    return currentNode.element;
+  };
+  
+  
+  this.addAt = function(index, element){
+    var node = new Node(element);
+
+    var currentNode = head;
+    var previousNode;
+    var currentIndex = 0;
+
+    if(index > length){
+        return false;
+    }
+
+    if(index === 0){
+        node.next = currentNode;
+        head = node;
+    } else {
+        while(currentIndex < index){
+            currentIndex++;
+            previousNode = currentNode;
+            currentNode = currentNode.next;
+        }
+        node.next = currentNode;
+        previousNode.next = node;
+    }
+    length++;
+  }
+  
+  this.removeAt = function(index) {
+    var currentNode = head;
+    var previousNode;
+    var currentIndex = 0;
+    if (index < 0 || index >= length){
+        return null
+    }
+    if(index === 0){
+        head = currentNode.next;
+    } else {
+        while(currentIndex < index) {
+            currentIndex ++;
+            previousNode = currentNode;
+            currentNode = currentNode.next;
+        }
+        previousNode.next = currentNode.next
+    }
+    length--;
+    return currentNode.element;
+  }
+
+} 
+```
+
+## Trie
+
+- Sometimes called a prefix tree
+- Special type of tree used to store associatve data structures
+- Trie stores data in steps, each step is a node in the Trie
+
+```
+let Node = function() {
+	this.keys = new Map();
+	this.end = false;
+	this.setEnd = function() {
+		this.end = true;
+	};
+	this.isEnd = function() {
+		return this.end;
+	};
+};
+
+let Trie = function() {
+
+	this.root = new Node();
+
+	this.add = function(input, node = this.root) {
+		if (input.length == 0) {
+			node.setEnd();
+			return;
+		} else if (!node.keys.has(input[0])) {
+			node.keys.set(input[0], new Node());
+			return this.add(input.substr(1), node.keys.get(input[0]));
+		} else {
+			return this.add(input.substr(1), node.keys.get(input[0]));
+		};
+	};
+
+	this.isWord = function(word) {
+		let node = this.root;
+		while (word.length > 1) {
+			if (!node.keys.has(word[0])) {
+				return false;
+			} else {
+				node = node.keys.get(word[0]);
+				word = word.substr(1);
+			};
+		};
+		return (node.keys.has(word) && node.keys.get(word).isEnd()) ? 
+      true : false;
+	};
+
+	this.print = function() {
+		let words = new Array();
+		let search = function(node, string) {
+			if (node.keys.size != 0) {
+				for (let letter of node.keys.keys()) {
+					search(node.keys.get(letter), string.concat(letter));
+				};
+				if (node.isEnd()) {
+					words.push(string);
+				};
+			} else {
+				string.length > 0 ? words.push(string) : undefined;
+				return;
+			};
+		};
+		search(this.root, new String());
+		return words.length > 0 ? words : mo;
+	};
+
+};
+```
+
+<img src="./images/Trie.png">
+
+## Heap 
+
+- Some similarities to a binary search tree except the order is different
+- Each node has at most 2 child nodes
+  - <b>Max Heap</b>: All parent nodes are equal than or greater than the child nodes 
+  - <b>Min Heap</b>: All parent nodes are equal than or smaller than the child nodes 
+- Heaps can be, and are often, represented as arrays
+- Heaps have no index 0
+
+```
+let MinHeap = function() {
+	
+	let heap = [null];
+	
+	this.insert = function(num) {
+		heap.push(num);
+		if (heap.length > 2) {
+			let idx = heap.length - 1;
+			while (heap[idx] < heap[Math.floor(idx/2)]) {
+				if (idx >= 1) {
+					[heap[Math.floor(idx/2)], heap[idx]] = [heap[idx], heap[Math.floor(idx/2)]];
+					if (Math.floor(idx/2) > 1) {
+						idx = Math.floor(idx/2);
+					} else {
+						break;
+					};
+				};
+			};
+		};
+	};
+	
+	this.remove = function() {
+		let smallest = heap[1];
+		if (heap.length > 2) {
+			heap[1] = heap[heap.length - 1];
+			heap.splice(heap.length - 1);
+			if (heap.length == 3) {
+				if (heap[1] > heap[2]) {
+					[heap[1], heap[2]] = [heap[2], heap[1]];
+				};
+				return smallest;
+			};
+			let i = 1;
+			let left = 2 * i;
+			let right = 2 * i + 1;
+			while (heap[i] >= heap[left] || heap[i] >= heap[right]) {
+				if (heap[left] < heap[right]) {
+					[heap[i], heap[left]] = [heap[left], heap[i]];
+					i = 2 * i
+				} else {
+					[heap[i], heap[right]] = [heap[right], heap[i]];
+					i = 2 * i + 1;
+				};
+				left = 2 * i;
+				right = 2 * i + 1;
+				if (heap[left] == undefined || heap[right] == undefined) {
+					break;
+				};
+			};
+		} else if (heap.length == 2) {
+			heap.splice(1, 1);
+		} else {
+			return null;
+		};
+		return smallest;
+	};
+  
+	this.sort = function() {
+		let result = new Array();
+		while (heap.length > 1) {
+			result.push(this.remove());
+		};
+		return result;
+	};
+
+};
+
+let MaxHeap = function() {
+	
+	let heap = [null];
+	
+	this.print = () => heap;
+
+	this.insert = function(num) {
+		heap.push(num);
+		if (heap.length > 2) {
+			let idx = heap.length - 1;
+			while (heap[idx] > heap[Math.floor(idx/2)]) {
+				if (idx >= 1) {
+					[heap[Math.floor(idx/2)], heap[idx]] = [heap[idx], heap[Math.floor(idx/2)]];
+					if (Math.floor(idx/2) > 1) {
+						idx = Math.floor(idx/2);
+					} else {
+						break;
+					};
+				};
+			};
+		};
+	};
+	
+	this.remove = function() {
+		let smallest = heap[1];
+		if (heap.length > 2) {
+			heap[1] = heap[heap.length - 1];
+			heap.splice(heap.length - 1);
+			if (heap.length == 3) {
+				if (heap[1] < heap[2]) {
+					[heap[1], heap[2]] = [heap[2], heap[1]];
+				};
+				return smallest;
+			};
+			let i = 1;
+			let left = 2 * i;
+			let right = 2 * i + 1;
+			while (heap[i] <= heap[left] || heap[i] <= heap[right]) {
+				if (heap[left] > heap[right]) {
+					[heap[i], heap[left]] = [heap[left], heap[i]];
+					i = 2 * i
+				} else {
+					[heap[i], heap[right]] = [heap[right], heap[i]];
+					i = 2 * i + 1;
+				};
+				left = 2 * i;
+				right = 2 * i + 1;
+				if (heap[left] == undefined || heap[right] == undefined) {
+					break;
+				};
+			};
+		} else if (heap.length == 2) {
+			heap.splice(1, 1);
+		} else {
+			return null;
+		};
+		return smallest;
+	};
+
+};
+```
+
+<img src="./images/Heap.png">
