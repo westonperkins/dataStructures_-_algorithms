@@ -1,4 +1,4 @@
-# Data Structures and Algorithms Notes
+# Data Structures and Algorithms Notes {ignore=true}
 
 <hr>
 
@@ -6,7 +6,22 @@
 
 <!-- code_chunk_output -->
 
-- [Data Structures and Algorithms Notes](#data-structures-and-algorithms-notes)
+- [Algorithms](#algorithms)
+  - [Sliding Window](#sliding-window)
+  - [Two Pointers / Iterators](#two-pointers-iterators)
+  - [Fast and Slow pointers](#fast-and-slow-pointers)
+  - [Merge Intervals](#merge-intervals)
+  - [Cyclic Sort](#cyclic-sort)
+  - [In Place Reversal of Linked List](#in-place-reversal-of-linked-list)
+  - [Tree BFS](#tree-bfs)
+  - [Tree DFS](#tree-dfs)
+  - [Two Heaps](#two-heaps)
+  - [Subsets](#subsets)
+  - [Modified Binary Search](#modified-binary-search)
+  - [Top K Elements](#top-k-elements)
+  - [K-way Merge](#k-way-merge)
+  - [Topological Sort](#topological-sort)
+- [Data Structures](#data-structures)
   - [Stacks](#stacks)
   - [Sets](#sets)
   - [Queue](#queue)
@@ -21,6 +36,24 @@
         - [Breadth-First Search in a Graph](#breadth-first-search-in-a-graph)
 
 <!-- /code_chunk_output -->
+# Algorithms
+- Various methods of solving for algorithms
+## Sliding Window
+## Two Pointers / Iterators
+## Fast and Slow pointers
+## Merge Intervals 
+## Cyclic Sort 
+## In Place Reversal of Linked List
+## Tree BFS
+## Tree DFS
+## Two Heaps
+## Subsets
+## Modified Binary Search
+## Top K Elements
+## K-way Merge
+## Topological Sort
+
+# Data Structures
 
 ## Stacks
 - Last in First out service
